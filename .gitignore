@@ -1,0 +1,4 @@
+node_modules/
+out
+src/reveal.js/node_modules/
+/src/reveal.js/test
