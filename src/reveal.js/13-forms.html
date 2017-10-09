@@ -1,0 +1,568 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+          <section data-markdown>
+              # Forms in React
+              
+              .title-logo[![Red logo](/public/img/red-logo-white.svg)]
+            
+          </section>
+          <section data-markdown>
+              ## Exercise 1
+              
+              Write a basic form in HTML only that alerts the value of an input.
+              
+          </section>
+          <section data-markdown>
+              # Basic Form
+              
+              `onSubmit` will be triggered when the button with type `submit` is clicked.
+              
+              ```html
+              <form onSubmit="alert(document.getElementById('name').value)">
+                <input id="name" type="text" />
+                <button type="submit">Submit</button>
+              </form>
+              ```
+              
+              We can capture the input value using a selector.
+          </section>
+          <section data-markdown>
+              # Agenda
+              
+              Building forms in React
+              
+              1. Controlled vs. Uncontrolled components
+              2. React form events
+              3. Redux-Form
+              4. Form validation
+              5. Displaying errors
+              
+          </section>
+          <section data-markdown>
+              # Exercise 2
+              
+              Install a repo of React-Form demos.
+              
+              ```shell
+              git clone https://github.com/redacademy/adp-react-forms.git
+              cd adp-react-form-demos
+              npm install
+              npm start
+              ```
+          </section>
+          <section data-markdown>
+              # React Forms
+              
+              Forms in React are not as intuitive as you might expect.
+              
+              Try the following input.
+              
+              ```html
+                <input
+                  type="text"
+                  value="expected"
+                />
+              ```
+              
+              - What happens? Why?
+          </section>
+          <section data-markdown>
+              # Controlled & Uncontrolled
+              
+              In React, form elements are considered "controlled" or "uncontrolled".
+              Read [React Forms](https://facebook.github.io/react/docs/forms.html).
+              
+              - With a partner, compare the "controlled" and "uncontrolled" input.
+              - Act out the differences, one person is a "controlled" input with a component parent, and the other "uncontrolled" with a parent.
+          </section>
+          <section data-markdown>
+              # React Form Events
+              
+              React has two major form events you should know:
+              
+              - `onChange`
+              - `onSubmit`
+          </section>
+          <section data-markdown>
+              # onChange
+              
+              `onChange` is attached to an input and called every time an input value changes.
+              
+              ```html
+              <input onChange={(value) => console.log(value)} />
+              ```
+              
+              - What might we use `onChange` for?
+              
+          </section>
+          <section data-markdown>
+              # onChange
+              
+              `onChange` is attached to an input and called every time an input value changes.
+              
+              ```html
+              <input onChange={(value) => console.log(value)} />
+              ```
+              
+              - What might we use `onChange` for?
+              
+              Updating an input's value every time the value changes.
+          </section>
+          <section data-markdown>
+              # Controlled
+              
+              A controlled components handles it's own component state.
+              
+              1. `onChange` calls `handleChange` method
+              2. `handleChange` updates component `state`
+              3. `state` change updates component view
+          </section>
+          <section data-markdown>
+              # Form Values
+              
+              Form values create an object with keys matching the "name" given to the inputs.
+              
+              ```html
+              <input name="title" defaultValue="React Forms"/>
+              <input name="description" defaultValue="Some practice"/>
+              ```
+              
+              Data:
+              
+              ```js
+              {
+                title: "React Forms",
+                description: "Some practice"
+              }
+              ```
+          </section>
+          <section data-markdown>
+              # onSubmit
+              
+              `onSubmit` is attached to a form, and called every time a "submit" event is triggered.
+              
+              ```html
+              <form onSubmit={(values) => console.log(values)}>
+                {/* ... inputs ... */}
+              </form>
+              ```
+              
+              - How can we trigger an `onSubmit` event?
+          </section>
+          <section data-markdown>
+              # onSubmit
+              
+              We can trigger an `onSubmit` event by setting the type of a button or input to "submit".
+              
+              ```html
+              <form onSubmit={(values) => console.log(values)}>
+                {/* ... inputs ... */}
+                <button type="submit">Submit</button>
+              </form>
+              ```
+          </section>
+          <section data-markdown>
+              ## Exercise 3
+              
+              Add an extra field to either your **controlled** or  **uncontrolled** form.
+              
+              The output data should be in JSON, like the following:
+              
+              ```json
+              {
+                "username": "name",
+                "password": "pass"
+              }
+              ```
+          </section>
+          <section data-markdown>
+              # A Common Issue
+              
+              The following code will throw an error on submit. Why?
+              
+              ```js
+              constructor(props) {
+                super(props);
+                this.state = { values: '' };
+              }
+              onSubmit(values) {
+                this.setState({ values });
+              }
+              render() {
+                return <form onSubmit={this.onSubmit}>
+                  {/* ... */}
+                </form>
+              }
+              ```
+          </section>
+          <section data-markdown>
+              ## Exercise 4
+              
+              Add any of the following to a form of your choosing:
+              
+              - show an error message if the password is shorter than 5 characters
+              - make it impossible for a user to type a username longer than 8 characters
+              - validate that a username does not contain any capital letters
+              - disable the submit button if any of the fields are invalid
+          </section>
+          <section data-markdown>
+              # Redux Form
+          </section>
+          <section data-markdown>
+              # Redux Form
+              
+              Redux form is a popular library for... well... using forms with Redux.
+              
+              - form state props (valid)
+              - saves state to Redux store
+              - validation helpers (error messages)
+              
+              [Docs: Redux-Form](http://redux-form.com/6.0.1/).
+          </section>
+          <section data-markdown>
+              # Setup
+              
+              Add a formReducer for Redux form.
+              
+              ```js
+              import { createStore, combineReducers } from 'redux'
+              import { reducer as formReducer } from 'redux-form'
+              
+              const reducers = {
+                // ... your other reducers here ...
+                form: formReducer     // <---- Mounted at 'form'
+              }
+              const reducer = combineReducers(reducers)
+              const store = createStore(reducer)
+              ```
+              
+              [Docs: Getting Started](http://redux-form.com/6.0.2/docs/GettingStarted.md/)
+          </section>
+          <section data-markdown>
+              # reduxForm
+              
+              Connect a component to reduxForm. Add a unique form name.
+              
+              ```js
+              class FormComponent extends React.Component {/* ... */}
+              
+              FormComponent = reduxForm({
+                form: 'form1'
+              })(FormComponent);
+              ```
+              
+              [Docs: reduxForm](http://redux-form.com/6.0.2/docs/api/ReduxForm.md/)
+          </section>
+          <section data-markdown>
+              # State
+              
+              The **form name** corresponds to a **key** in your redux store.
+              
+              ```js
+              console.log(store.getState());
+              
+              /*
+              {
+                form: {
+                  form1: {
+                    // your form data here
+                  }
+                }
+              }
+              */
+              ```
+          </section>
+          <section data-markdown>
+              # Props
+              
+              A component connected with `reduxForm` passes in several props.
+              
+              ```js
+              class FormComponent extends React.Component {
+                render() {
+                  console.log(this.props);
+                  return <form></form>
+                }
+              }
+              ```
+              
+              - Which props are added by Redux Form?
+          </section>
+          <section data-markdown>
+              # Props
+              
+              What might we use each of these props for?
+              
+              - dispatch
+              - pristine / dirty
+              - valid / invalid
+              - submitting
+              - error
+              
+              [Docs: Props](http://redux-form.com/6.0.2/docs/api/Props.md)
+          </section>
+          <section data-markdown>
+              # Field
+              
+              Field's are input components used with "redux-form".
+              
+              ```html
+              <Field
+                name="myField"
+                component="input"
+              />
+              ```
+              
+              Field's require a **name** and **component**.
+              
+              See other optional properties: [Docs: Field](http://redux-form.com/6.0.2/docs/api/Field.md/)
+          </section>
+          <section data-markdown>
+              # Custom Field's
+              
+              You can create your own custom `<Field />` components.
+              
+              ```js
+              // outside your render() method
+              const myCustomField = (field) => (
+                <div className="input-row">
+                  <input {...field.input} type="text"/>
+                  { field.meta.touched &&
+                    field.meta.error &&
+                    <span className="error">{field.meta.error}</span>
+                  }
+                </div>
+              );
+              ```
+          </section>
+          <section data-markdown>
+              # handleSubmit
+              
+              Redux-Form adds a `handleSubmit` prop, which can be added to your form.
+              
+              ```html
+              
+              <form onSubmit={
+                this.props.handleSubmit((values) => console.log(values))
+              }>
+              ```
+              
+              `handleSubmit`, as the name implies, calls a function when data is submitted.
+          </section>
+          <section data-markdown>
+              # connect
+              
+              "react-redux" can be called after "redux-form" is applied.
+              
+              ```js
+              FormComponent = reduxForm({ form: 'form1' })(FormComponent);
+              FormComponent = connect(
+                mapStateToProps,
+                mapDispatchToProps
+              )(FormComponent);
+              ```
+              
+              `connect` connects the redux **state** and **dispatch** to the component.
+              
+          </section>
+          <section data-markdown>
+              # Submit Function
+              
+              We can pass a submit function to our `handleSubmit`.
+              
+              ```js
+              import submit from './submit';
+              
+              /*... */
+              <form onSubmit={handleSubmit(submit)}>
+              ```
+              
+              [Docs: Submit](http://redux-form.com/6.0.2/examples/submitValidation/)
+          </section>
+          <section data-markdown>
+              # Submit Function
+              
+              The submit function can be used to update the state.
+              
+              ```js
+              import store from '../store';
+              
+              function submit(values) {
+                // save!
+                store.dispatch(saveForm(values));
+              }
+              export default submit;
+              ```
+          </section>
+          <section data-markdown>
+              # Validation Errors
+              
+              Validation errors can be handled with `SubmissionError`.
+              
+              ```js
+              import { SubmissionError } from 'redux-form';
+              
+              function submit(values) {
+                 if (!values.length) {
+                   throw new SubmissionError({
+                     name: 'Name does not exist',
+                     _error: 'Must include a name'
+                   });
+                 } else {
+                   store.dispatch(saveForm(values));
+                 }
+              }
+              export default submit;
+              ```
+              
+              [Docs: SubmissionError](http://redux-form.com/6.0.2/docs/api/SubmissionError.md/)
+          </section>
+          <section data-markdown>
+              # Displaying Errors
+              
+              `touched` & `error` are both props passed in by "redux-form".
+              
+              When does the following error get displayed?
+              
+              ```js
+              const renderField = ({ input, label, type, meta: { touched, error } }) => (
+                <div>
+                  <label>{label}</label>
+                  <div>
+                    <input {...input} placeholder={label} type={type}/>
+                    {touched && error && <span>{error}</span>}
+                  </div>
+                </div>
+              )
+              ```
+          </section>
+          <section data-markdown>
+              # Disabled Button
+              
+              We know how to disable a button in HTML.
+              
+              ```html
+              <button type="submit" disabled={true}>Submit</button>
+              ```
+              
+              - How can we *disable* the submit button when the form is **invalid** or is **submitting**?
+          </section>
+          <section data-markdown>
+              # Using Meta Props
+              
+              We can use the "meta" props to specify our disable property.
+              
+              - invalid: true
+              - submitting: true
+              
+              ```html
+              <button
+                type="submit"
+                disabled={invalid || submitting}
+              >Submit</button>
+              ```
+          </section>
+          <section data-markdown>
+              # Performance Experiment
+              
+              - How often do you think your form component is re-rendered?
+          </section>
+          <section data-markdown>
+              # Performance Experiment
+              
+              Add the following code to the top of your form.
+              
+              ```js
+              render() {
+                console.log('rendered');
+              }
+              ```
+              - When is a form re-render triggered?
+          </section>
+          <section data-markdown>
+              # Material-UI
+              
+              We can use "material-ui" form components easily by using [redux-form-material-ui](http://erikras.github.io/redux-form-material-ui/).
+              
+              ```html
+               <Field
+                name="name"
+                component={TextField}
+                hintText="Name"
+                floatingLabelText="Name"
+              />
+              ```
+              
+              [Docs: MaterialUi](http://redux-form.com/6.0.2/examples/material-ui/)
+          </section>
+          <section data-markdown>
+              # Custom Components
+              
+              Material-UI components are created with a simple [wrapper component](https://github.com/erikras/redux-form-material-ui/blob/master/src/createComponent.js).
+              
+              Feel free to create your own wrapper for any other UI library.
+          </section>
+          <section data-markdown>
+              # Review
+              
+              1. Controlled vs. Uncontrolled components
+              2. React Form events
+              3. Redux Form
+              4. Form validation
+              5. Displaying errors
+          </section>
+          <section data-markdown>
+              ## Challenge
+              
+              Create a form in your Boomtown project. Include:
+                - saving data to the Redux store
+                - validation of fields
+                - styled components
+                - error feedback
+                - a disabled submit button when the form is invalid
+          </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

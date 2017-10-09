@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+          <section data-markdown>
+              <section data-markdown>
+                  # Client-Side Validation
+                  
+                  .title-logo[![Red logo](/public/img/red-logo-white.svg)]
+              </section>
+              <section data-markdown>
+                  # Agenda
+                  
+                  1. UX Guest Speaker
+                  1. Client vs Server Validation
+                  1. Controlled vs Uncontrolled Components
+                  1. Form Validation in Redux
+                  1. Implement a form using the `Redux Form` library
+              </section>
+              <section data-markdown>
+                  # Client vs Server Validation
+              </section>
+              <section data-markdown>
+                  # Exercise 1
+                  
+                  Split into two groups.
+                  
+                  - Group 1: Research client-side validation
+                  - Group 2: Research server-side validation
+                  
+                  You have 10 minutes, then we'll present.
+                  
+                  ???
+                  
+                  Essential differences:
+                  
+                  - Client-side validation is inherently insecure
+                  - Client-side validation makes an app seem faster
+                  - Server-side validation is absolutely required
+                  - Client-side validation is for the user's convenience, but can also save a huge amount of resources. Ie. Picture 1,000,000 requests that are poorly formed. Client-side validation stops them from happening altogether.
+                  - In short,eEvery app needs both client and server-side validation
+              </section>
+              <section data-markdown>
+                  # Controlled vs Uncontrolled Components
+              </section>
+              <section data-markdown>
+                  # Exercise 2
+                  
+                  Back into two groups.
+                  
+                  - Group 1: Research controlled components
+                  - Group 1: Research uncontrolled components
+                  
+                  You have 10 minutes, then we'll present.
+                  
+                  ???
+                  
+                  Controlled components are controlled by React. That means we have programatic access to their values without having to interact with the DOM.
+                  
+                  Uncontrolled components rely on the DOM to store their state. This is inefficient in the long wrong, and contrary to React/Redux principles.
+              </section>
+              <section data-markdown>
+                  # Form Validation in React/Redux
+              </section>
+              <section data-markdown>
+                  # Discuss
+                  
+                  Where should form state exist in a React/Redux application?
+                  
+                  - Think of the pros and cons of local state vs Redux state
+                  - Is invalid state still state?
+                  
+                  It might help to look up 'Ephemeral' state  
+                  
+                  ???
+                  
+                  Hopefully this will lead to them understanding:
+                  
+                  - Form state is ephemeral, which means that it isn't meaningful to the application until it is validated.
+                  - We don't want to be updating redux with every key stroke. That will be very inefficient, as we'll be firing our pure reducer functions to make state that might not even be valid.
+              </section>
+              <section data-markdown>
+                  # Exercise 3
+                  
+                  2 new groups!
+                  
+                  Draw how an application might handle client-side form validation.
+                  
+                  You have 15 minutes.
+                  
+                  ???
+                  
+                  This is an example of where will be good to use component-level state in React/Redux. The form component should own the state for all of its inputs, but we shouldn't pass any of it to Redux (and our servers) until we know that the form is completely valid.
+              </section>
+              <section data-markdown>
+                  # Lab Activity
+                  
+                  Create the forms that you'll use in your Boomtown app, using the [Redux Form](http://redux-form.com) library.
+                  You'll need to create both a user (login) form and a form for adding new Items.
+                  
+                  Be sure to include:
+                    - saving data to the Redux store
+                    - validation of fields
+                    - styled components
+                    - error feedback
+              </section>
+              
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
