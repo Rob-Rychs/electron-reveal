@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <style>
+      .card {
+        height: 100vh;
+        width: 100vw;
+        margin-right: 100px;
+        background-color: black;
+      }
+
+      .black {
+        background-color: black;
+        height: 100vh;
+        width: 100vw;
+      }
+      .dav{
+        height: 200px;
+      }
+    </style>
+	</head>
+	<body>
+      
+		<div class="reveal">
+        <canvas id="c"></canvas>
+			<div class="slides">
+          <section>
+              <pre id="b" class="ascii-art">
+██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
+██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
+██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
+██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
+╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+ ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝                                                               
+              </pre>
+        </section>
+        <section data-markdown class="black">
+       
+        </section>
+          <section data-markdown class="black">
+             
+
+          </section>
+        <section>  
+          <section class="black">
+             
+              
+            
+          </section>
+          <section class="black">
+             
+          </section>
+        </section>
+        <section data-markdown>
+         
+        </section>
+        <section data-markdown>
+      
+        </section>
+        
+
+      
+				
+
+			</div>
+    </div>
+    
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+    </script>
+    <script> 
+      // geting canvas by id c
+      var c = document.getElementById("c");
+      var ctx = c.getContext("2d");
+  
+      //making the canvas full screen
+      c.height = window.innerHeight;
+      c.width = window.innerWidth;
+  
+      //chinese characters - taken from the unicode charset
+      var matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+      //converting the string into an array of single characters
+      matrix = matrix.split("");
+  
+      var font_size = 10;
+      var columns = c.width/font_size; //number of columns for the rain
+      //an array of drops - one per column
+      var drops = [];
+      //x below is the x coordinate
+      //1 = y co-ordinate of the drop(same for every drop initially)
+      for(var x = 0; x < columns; x++)
+        drops[x] = 1; 
+  
+      //drawing the characters
+      function draw()
+      {
+        //Black BG for the canvas
+        //translucent BG to show trail
+        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+        ctx.fillRect(0, 0, c.width, c.height);
+  
+        ctx.fillStyle = "#0F0"; //green text
+        ctx.font = font_size + "px arial";
+        //looping over drops
+        for(var i = 0; i < drops.length; i++)
+        {
+          //a random chinese character to print
+          var text = matrix[Math.floor(Math.random()*matrix.length)];
+          //x = i*font_size, y = value of drops[i]*font_size
+          ctx.fillText(text, i*font_size, drops[i]*font_size);
+  
+          //sending the drop back to the top randomly after it has crossed the screen
+          //adding a randomness to the reset to make the drops scattered on the Y axis
+          if(drops[i]*font_size > c.height && Math.random() > 0.975)
+            drops[i] = 0;
+  
+          //incrementing Y coordinate
+          drops[i]++;
+        }
+      }
+  
+      setInterval(draw, 35);
+  
+      
+      </script>
+	</body>
+</html>
